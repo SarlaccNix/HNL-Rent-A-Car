@@ -1,5 +1,34 @@
 <Route>Rent Market</Route>
+    <ListedCar>
+        data: {
+                Car Model,
+                Year,
+                AT/MT,
+                Color:
+                    {
+                        White,
+                        Gray
+                    }
+                Price per Day
+            }
+        properties: action Rent button
+            clickHandler = loggedin? <Confirmation/> : <SignUp>   
+    </ListedCar> 
+
+
 <Route> Sign Up</Route>
+
+<Route> Confirmation
+    Pick up or Delivery ?
+    Show Total depending on pickup/delivery and add taxes    
+    Confirm Button
+</Route>
+
+<Route>Login 
+    <Popup>Google Login</Popup>
+    <Popup>FB Login (si da el tiempo)</Popup>
+</Route>
+
 <PrivateRoute>Rental History</PrivateRoute>
 
 
