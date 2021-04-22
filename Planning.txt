@@ -1,0 +1,27 @@
+<Route>Rent Market</Route>
+<Route> Sign Up</Route>
+<PrivateRoute>Rental History</PrivateRoute>
+
+
+
+
+Aplicación Web para el Alquiler de Vehículos
+--------------------------------------------------------------
+Diseñe e implemente una aplicación web sencilla utilizando Angular o React que le permita a los usuarios de
+la misma realizar alquiler de vehículos. Tome en consideración los siguientes requerimientos:
+
+-Los usuarios deben poder visualizar la lista de los autos disponibles para alquiler.
+-Formulario de registro para la orden de alquiler
+-Cualquier otro feature (en materia de diseño o funcionalidad) que le añada valor a la aplicación.
+
+Los siguientes requerimientos no son obligatorios (pero se consideran de alto valor):
+-Los usuarios pueden registrarse en la aplicación
+-Pueden crear cuentas de usuario, visualizar su perfil e historial de autos alquilados.
+-Utilice Firebase para el manejo de los datos.
+
+Consideraciones:
+Buenas prácticas según el framework o librerías utilizadas.
+Simplicidad en la implementación.
+
+Crear un repositorio público (GitHub, Bitbucket, GitLab, etc.) donde podamos verificar los resultados de lo
+desarrollado.
