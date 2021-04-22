@@ -1,15 +1,17 @@
 <Route>Rent Market</Route>
     <ListedCar>
         data: {
+                Brand,
                 Car Model,
-                Year,
+                Year, (number)
                 AT/MT,
                 Color:
                     {
                         White,
                         Gray
                     }
-                Price per Day
+                Price per Day (number)
+                Qty
             }
         properties: action Rent button
             clickHandler = loggedin? <Confirmation/> : <SignUp>   

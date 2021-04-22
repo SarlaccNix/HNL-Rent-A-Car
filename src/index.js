@@ -2,24 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './app/App';
+
 import reportWebVitals from './reportWebVitals';
-import firebase from 'firebase/app';
 import { BrowserRouter } from 'react-router-dom';
 
-var firebaseConfig = {
-  apiKey: "AIzaSyAoilP_AnRKBaf363D7H2XrLa0wOCIV60U",
-    authDomain: "hypernova-rent-a-car.firebaseapp.com",
-    projectId: "hypernova-rent-a-car",
-    storageBucket: "hypernova-rent-a-car.appspot.com",
-    messagingSenderId: "599992758039",
-    appId: "1:599992758039:web:9d082b100c06fb09769152"
-}
+// Redux
+import { Provider } from 'react-redux'
+import store from './Redux/store';
 
-firebase.initializeApp(firebaseConfig);
+
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <Provider store={store}>
+     <App />
+    </Provider>
   </BrowserRouter>,
   document.getElementById('root')
 );
