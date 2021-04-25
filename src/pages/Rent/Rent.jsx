@@ -82,7 +82,6 @@ const Rent = (props)=> {
     const[rental,setRental] = useState([])
     const[user,setUser] = useState([]) 
     const [submitted, setSubmitted] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(new Date('2021-01-01T00:00:00'))
     const { name, lastname, email, idnumber, birth  } = inputs;
 
     useEffect(()=>{
@@ -91,11 +90,11 @@ const Rent = (props)=> {
         setUser(props.user)
     }, []);
 
-    const handleDateChange = (date) => {
-        const { name, value } = date.target
-        setSelectedDate(date);
-        setInputs(inputs => ({ ...inputs, [name]: value }));
-      };
+    // const handleDateChange = (date) => {
+    //     setSelectedDate(date);
+    //     setInputs(inputs=>({...inputs, birth: selectedDate}));
+    //     console.log(selectedDate, inputs.birth)
+    //   };
 
     const updateStock = (props) => {
         updateQty(-1, rental.id)
@@ -108,7 +107,6 @@ const Rent = (props)=> {
             sendOrder(inputs, rental.id);
         }
         updateStock();
-        window.location="/"
     }
 
     function handleChange(e) {
@@ -188,21 +186,22 @@ const Rent = (props)=> {
                                 <TextField className={classes.form} name="idnumber" value={idnumber} onChange={handleChange} type="text" id="outlined-basic" label="Id Number" variant="outlined" placeholder="X-XXX-XXXX"></TextField></Grid>
                                 
                                 <Grid item xs={4}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDatePicker 
+
+                                <TextField
                                 disableToolbar
                                 variant="inline"
-                                format="MM/dd/yyyy"
+                                
                                 margin="normal"
                                 id="date-picker-inline"
+                                type="date"
                                 label="Date picker inline"
                                 name="birth"
-                                value={selectedDate}
-                                onChange={handleDateChange}
-                                KeyboardButtonProps={{
-                                  'aria-label': 'change date',
-                                }}
-                                className={classes.form}  id="outlined-basic" label="Birthday" variant="outlined"></KeyboardDatePicker></MuiPickersUtilsProvider></Grid>
+                                defaultvalue="2021-01-01"
+                                onChange={handleChange}
+                                InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                className={classes.form}  id="outlined-basic" label="Birthday" variant="outlined"></TextField></Grid>
 
                                 <Grid item xs={4} >
                                 <Button className={classes.button} variant="contained" color="primary.light" onClick={()=>submitHandler(-1, rental.id)} >Reserve!</Button></Grid>
