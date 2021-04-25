@@ -108,6 +108,7 @@ const Rent = (props)=> {
             sendOrder(inputs, rental.id);
         }
         updateStock();
+        window.location="/"
     }
 
     function handleChange(e) {
@@ -208,8 +209,11 @@ const Rent = (props)=> {
 
                             </Grid>
                         </form>
-                    </Card>    
-                    
+                    </Card>  
+                    {submitted?  
+                     <Typography variant="h3" className={classes.subtitle}> Reserved! </Typography>
+                    : null
+                    }
                 </Grid>                      
             </Grid>
             </div> 
