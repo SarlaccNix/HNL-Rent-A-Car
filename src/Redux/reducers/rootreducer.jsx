@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux'
 
 const user = localStorage.getItem("displayname");
+const avatar = localStorage.getItem("photo")
 const cars = localStorage.getItem("cars");
 
-const authInitialValue = user ? { isLoggedIn: true, user } : { isLoggedIn: false, user: null};
+const authInitialValue = user ? { isLoggedIn: true, user, avatar } : { isLoggedIn: false, user: null, avatar: null};
 const dbInitialValue = cars ? {isLoading: false, cars} : {isLoading: true, cars: null};
 
 

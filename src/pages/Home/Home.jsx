@@ -57,22 +57,23 @@ const useStyles = makeStyles((theme)=> ({
       },
 }));
 
-const Home = ( props ) => {
+const Home = ( props  => {
     const classes = useStyles();
     const [cars, setCars] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loggedin, setLoggedIn] = useState();
 
 
-useEffect(()=>{
-    let parsedCars = [];
+useEffect( () => {
     setLoggedIn(props.loggedin)
-    setLoading(true);
-    getCars();
-    parsedCars = JSON.parse(localStorage.getItem("cars"))
-    setCars(parsedCars);
-    setLoading(false);
-}, []);
+    // setLoading(true);
+    const fetchCars = async () =>{
+        const res = await getCars();
+        setCars(JSON.parse(localStorage.getItem("cars")))
+    };
+    fetchCars()
+    // setLoading(false);
+}, [loading]);
 
 const loginHandler=(e)=>{
     window.location="/login"
@@ -84,14 +85,9 @@ const rentalHandler=useCallback((car)=>{
    window.location="/rent"
 })
 
-    if (loading) {
-        return <h1>... Loading ...</h1>
-    }
-
     
 
     return (
-       
           <div className={classes.root}>
               <div className={classes.grid}>
                     <Grid container
@@ -117,7 +113,7 @@ const rentalHandler=useCallback((car)=>{
                         alignItems="center"
                         justify="center"
                     >
-                        {cars.map((cars) =>(
+                        {cars.map((cars, index) =>(
                             <div className={classes.cards}  key={cars.id}>
                                 <Card >
                                     <CardContent>
@@ -157,7 +153,7 @@ const rentalHandler=useCallback((car)=>{
                     </Grid>
                 </div>
     );
-}
+})
 
 const mapStatetoProps = (state) =>{
   

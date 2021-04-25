@@ -4,7 +4,7 @@ import { React, useEffect, useState }  from 'react';
 import { connect } from 'react-redux'
 
 // Firebase
-import { updateQty } from '../../service/database'
+import { updateQty, sendOrder } from '../../service/database'
 
 //MUI
 import DateFnsUtils from '@date-io/date-fns';
@@ -22,6 +22,7 @@ import {
     KeyboardTimePicker,
     KeyboardDatePicker,
   } from '@material-ui/pickers';
+
 
 const useStyles = makeStyles((theme)=> ({
     root: {
@@ -67,31 +68,54 @@ const useStyles = makeStyles((theme)=> ({
       
 }));
 
+
+
 const Rent = (props)=> {
     const classes = useStyles();
+    const [inputs, setInputs] = useState({
+        name: '',
+        lastname: '',
+        email:'',
+        idnumber:'',
+        birth:''
+    });
     const[rental,setRental] = useState([])
     const[user,setUser] = useState([]) 
+    const [submitted, setSubmitted] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date('2021-01-01T00:00:00'))
+    const { name, lastname, email, idnumber, birth  } = inputs;
 
     useEffect(()=>{
         let parsedRental = JSON.parse(localStorage.getItem("rental"))
         setRental(parsedRental)
         setUser(props.user)
-        console.log(user)
     }, []);
 
     const handleDateChange = (date) => {
+        const { name, value } = date.target
         setSelectedDate(date);
+        setInputs(inputs => ({ ...inputs, [name]: value }));
       };
 
     const updateStock = (props) => {
         updateQty(-1, rental.id)
     }
 
-    const submitHandler = (props) =>{
+    const submitHandler = (e) =>{
+        setSubmitted(true);
+        if (name && lastname && email && idnumber && birth){
+            console.log(inputs)
+            sendOrder(inputs, rental.id);
+        }
         updateStock();
-        window.location="/"
     }
+
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setInputs(inputs => ({ ...inputs, [name]: value }));
+    }
+
+  
 
     return (
         <div className={classes.root}> 
@@ -151,16 +175,16 @@ const Rent = (props)=> {
                             direction="row"
                             display="inline-block">
                                 <Grid item xs={4}>
-                                <TextField className={classes.form} type="text" autoFocus="true" id="outlined-basic" label="Name" variant="outlined"></TextField></Grid>
+                                <TextField className={classes.form} name="name" value={name} onChange={handleChange} type="text" autoFocus="true" id="outlined-basic" label="Name" variant="outlined"></TextField></Grid>
                                 
                                 <Grid item xs={4}>
-                                <TextField className={classes.form}  type="text" id="outlined-basic" label="Last Name" variant="outlined"></TextField></Grid>
+                                <TextField className={classes.form} name="lastname" value={lastname} onChange={handleChange}  type="text" id="outlined-basic" label="Last Name" variant="outlined"></TextField></Grid>
 
                                 <Grid item xs={4}>
-                                <TextField className={classes.form} type="email" id="outlined-basic" label="Email" variant="outlined"></TextField></Grid>
+                                <TextField className={classes.form} name="email" value={email} onChange={handleChange} type="email" id="outlined-basic" label="Email" variant="outlined"></TextField></Grid>
                                 
                                 <Grid item xs={4}>
-                                <TextField className={classes.form} type="text" id="outlined-basic" label="Id Number" variant="outlined" placeholder="X-XXX-XXXX"></TextField></Grid>
+                                <TextField className={classes.form} name="idnumber" value={idnumber} onChange={handleChange} type="text" id="outlined-basic" label="Id Number" variant="outlined" placeholder="X-XXX-XXXX"></TextField></Grid>
                                 
                                 <Grid item xs={4}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -171,6 +195,7 @@ const Rent = (props)=> {
                                 margin="normal"
                                 id="date-picker-inline"
                                 label="Date picker inline"
+                                name="birth"
                                 value={selectedDate}
                                 onChange={handleDateChange}
                                 KeyboardButtonProps={{
@@ -180,7 +205,6 @@ const Rent = (props)=> {
 
                                 <Grid item xs={4} >
                                 <Button className={classes.button} variant="contained" color="primary.light" onClick={()=>submitHandler(-1, rental.id)} >Reserve!</Button></Grid>
-
 
                             </Grid>
                         </form>

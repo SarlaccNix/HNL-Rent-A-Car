@@ -4,9 +4,9 @@ import firebase from '../config/firebaseconfig'
 
 const ref = firebase.firestore().collection("RentalCars")
 
-export function getCars(){
+export async function getCars(){
     const cars = [];
-    ref
+    await ref
     .onSnapshot((querySnapshot) => {
         
         querySnapshot.forEach((doc) => {  
@@ -47,4 +47,13 @@ export async function updateQty(req, id){
    
 
     
+}
+
+export function sendOrder(userdata, carid){
+    
+    console.log(userdata, carid)
+    
+    // firebase
+    // .collection("orders")
+    // .set(data)
 }
