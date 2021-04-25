@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { getCars } from '../../service/database'
 
 const user = localStorage.getItem("displayname");
 const cars = localStorage.getItem("cars");
@@ -14,6 +13,15 @@ const authreducer = (state = authInitialValue, action) =>{
 }
 
 const databaseReducer = (state = dbInitialValue, action) =>{
+    if (action.type ==='SEND_RENTAL_ID'){
+        let sendRental = state.cars.filter(car =>{
+            return action.id !== car.id
+            });
+            return{
+                ...state,
+                cars: sendRental
+            }
+    }
     return state
 }
 

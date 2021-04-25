@@ -1,19 +1,11 @@
-import { React, useEffect, useState }  from 'react';
-import { Link } from 'react-router-dom';
-import firebase from '../../config/firebaseconfig'
+import { React, useEffect, useState, useCallback }  from 'react';
+
 
 // redux
 import { connect } from 'react-redux' 
 
-//components
-import CarCard from '../../components/Cars/CarCard'
+//firebase
 import { getCars } from '../../service/database'
-import ceratoSilver from '../../Img/Car_left_3D.png'
-import accentWhite from '../../Img/Car_left_3D.png'
-import hiluxSilver from '../../Img/Car_left_3D.png'
-import rushSilver from '../../Img/Car_left_3D.png'
-import ceratoWhite from '../../Img/Car_left_3D.png'
-
 
 //MUI
 import { makeStyles } from '@material-ui/core/styles';
@@ -41,10 +33,12 @@ const useStyles = makeStyles((theme)=> ({
     title: {
       fontSize: 30,
       justify: 'center',
+      margin: '1%'
     },
     subtitle:{
         fontSize: 16,
         align: 'center',
+        margin: '1%'
     },
     pos: {
       marginBottom: 12,
@@ -63,14 +57,16 @@ const useStyles = makeStyles((theme)=> ({
       },
 }));
 
-function Home(props) {
+const Home = ( props ) => {
     const classes = useStyles();
     const [cars, setCars] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [loggedin, setLoggedIn] = useState();
+
 
 useEffect(()=>{
     let parsedCars = [];
-
+    setLoggedIn(props.loggedin)
     setLoading(true);
     getCars();
     parsedCars = JSON.parse(localStorage.getItem("cars"))
@@ -78,7 +74,15 @@ useEffect(()=>{
     setLoading(false);
 }, []);
 
-  
+const loginHandler=(e)=>{
+    window.location="/login"
+}
+
+const rentalHandler=useCallback((car)=>{
+    let stringcar = JSON.stringify(car)
+   localStorage.setItem("rental", stringcar)
+   window.location="/rent"
+})
 
     if (loading) {
         return <h1>... Loading ...</h1>
@@ -87,6 +91,7 @@ useEffect(()=>{
     
 
     return (
+       
           <div className={classes.root}>
               <div className={classes.grid}>
                     <Grid container
@@ -99,9 +104,9 @@ useEffect(()=>{
                         <h1>Welcome to HNL Rent-A-Car</h1>
                     </Grid>
 
-                    <div className={classes.subtitle}>
+                    <Grid item xs={6} className={classes.subtitle}>
                             <h2>Ready for your next adventure?</h2>
-                    </div>
+                    </Grid>
                     </Grid>
                 </div>
 
@@ -123,25 +128,28 @@ useEffect(()=>{
                                             image={cars.image}
                                             title="Car for Rent!"
                                             />
-                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            <Typography className={classes.subtitle} color="textSecondary" gutterBottom>
                                             {cars.Type}
                                             </Typography>
                                             <Typography variant="h5" component="h2">
                                             {cars.Brand} {cars.Model}
                                             </Typography>
                                             <Typography className={classes.pos} color="textSecondary">
-                                            Price: {cars.Price}
+                                            Price: ${cars.Price} per day
                                             </Typography>
                                             <Typography variant="body2" component="p">
                                             Transmission: {cars.Transmission}
                                             </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        {cars.Qty > 0 ? (
-                                         <Button className={classes.button} size="small">Schedule Now!</Button>
-                                         ) : (
-                                        <Button className={classes.button} size="small">Unavailable!</Button>
-                                        )}           
+                                        {loggedin ? 
+                                            cars.Qty > 0 ? (<Button onClick={()=>(rentalHandler(cars))} className={classes.button} size="medium">Schedule Now!</Button>
+                                                ) : (
+                                               <Button className={classes.button} disabled size="medium">Unavailable!</Button>
+                                               )
+                                            : 
+                                            (<Button className={classes.button} onClick={()=>(loginHandler())} size="medium">Log in to Schedule!</Button>) }
+                                                 
                                     </CardActions>
                                 </Card>
                         </div>
@@ -153,8 +161,14 @@ useEffect(()=>{
 
 const mapStatetoProps = (state) =>{
   
-    return {cars: state.databaseReducer.cars}
+    return {
+             cars: state.databaseReducer.cars,
+             loggedin: state.authreducer.isLoggedIn
+            }
 
 }
+
+
+   
 
 export default connect(mapStatetoProps)(Home)

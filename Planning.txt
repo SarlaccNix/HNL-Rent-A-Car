@@ -17,9 +17,6 @@
             clickHandler = loggedin? <Confirmation/> : <SignUp>   
     </ListedCar> 
 
-
-<Route> Sign Up</Route>
-
 <Route> Confirmation
     Pick up or Delivery ?
     Show Total depending on pickup/delivery and add taxes    
@@ -32,6 +29,8 @@
 </Route>
 
 <PrivateRoute>Rental History</PrivateRoute>
+<PrivateRoute>Profile View</PrivateRoute>
+
 
 
 
@@ -45,8 +44,8 @@ la misma realizar alquiler de vehículos. Tome en consideración los siguientes 
 -Formulario de registro para la orden de alquiler
 -Cualquier otro feature (en materia de diseño o funcionalidad) que le añada valor a la aplicación.
 
-Los siguientes requerimientos no son obligatorios (pero se consideran de alto valor):
--Los usuarios pueden registrarse en la aplicación
+Los siguientes requerimientos no son oblila aplicacióngatorios (pero se consideran de alto valor):
+-Los usuarios pueden registrarse en 
 -Pueden crear cuentas de usuario, visualizar su perfil e historial de autos alquilados.
 -Utilice Firebase para el manejo de los datos.
 

@@ -10,7 +10,7 @@ import './App.css';
 //Components Import
 import Home  from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
-import Signup from '../pages/Signup/Signup';
+import Rent from '../pages/Rent/Rent';
 import  Navbar  from '../components/Navbar/Navbar';
 import { Footer } from '../components/Footer/Footer'
 
@@ -49,8 +49,8 @@ function App() {
          <Login/>
         </Route>
 
-        <Route path="/signup">
-         <Signup/>
+        <Route path="/rent">
+         <Rent/>
         </Route>
       
      </Switch>
