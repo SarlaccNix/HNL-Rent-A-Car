@@ -107,6 +107,7 @@ const Rent = (props)=> {
             sendOrder(inputs, rental.id);
         }
         updateStock();
+        window.location="/"
     }
 
     function handleChange(e) {
