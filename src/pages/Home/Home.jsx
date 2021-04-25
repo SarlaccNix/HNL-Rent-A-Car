@@ -1,23 +1,160 @@
-import React from 'react';
+import { React, useEffect, useState }  from 'react';
 import { Link } from 'react-router-dom';
+import firebase from '../../config/firebaseconfig'
+
+// redux
+import { connect } from 'react-redux' 
+
+//components
+import CarCard from '../../components/Cars/CarCard'
+import { getCars } from '../../service/database'
+import ceratoSilver from '../../Img/Car_left_3D.png'
+import accentWhite from '../../Img/Car_left_3D.png'
+import hiluxSilver from '../../Img/Car_left_3D.png'
+import rushSilver from '../../Img/Car_left_3D.png'
+import ceratoWhite from '../../Img/Car_left_3D.png'
+
+
+//MUI
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import CardMedia from '@material-ui/core/CardMedia';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+
+const useStyles = makeStyles((theme)=> ({
+    cards: {
+      minWidth: 275,
+      maxWidth: 300,
+      display: 'inline-block',
+      margin: '15px 15px'
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)',
+    },
+    title: {
+      fontSize: 30,
+      justify: 'center',
+    },
+    subtitle:{
+        fontSize: 16,
+        align: 'center',
+    },
+    pos: {
+      marginBottom: 12,
+    },
+    button: {
+        marginLeft: 'auto',
+        color: 'red'
+    },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+      },
+      grid: {
+        flexGrow: 1,
+      },
+}));
 
 function Home(props) {
-    return (
+    const classes = useStyles();
+    const [cars, setCars] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-            <div>
-                <h1>You came Home!</h1>
-                <div className="market-display">
-                    <ul>
-                        <li>
-                        <Link to="/signup">Signup!</Link>
-                        </li>
-                        <li>
-                        <Link to="/login">Login!</Link>
-                        </li>
-                    </ul>
+useEffect(()=>{
+    let parsedCars = [];
+
+    setLoading(true);
+    getCars();
+    parsedCars = JSON.parse(localStorage.getItem("cars"))
+    setCars(parsedCars);
+    setLoading(false);
+}, []);
+
+  
+
+    if (loading) {
+        return <h1>... Loading ...</h1>
+    }
+
+    
+
+    return (
+          <div className={classes.root}>
+              <div className={classes.grid}>
+                    <Grid container
+                        spacing={0}
+                        direction="column"
+                        alignItems="center"
+                        justify="center"
+                    >
+                    <Grid item xs={12} className={classes.title}>
+                        <h1>Welcome to HNL Rent-A-Car</h1>
+                    </Grid>
+
+                    <div className={classes.subtitle}>
+                            <h2>Ready for your next adventure?</h2>
+                    </div>
+                    </Grid>
                 </div>
-            </div>
+
+                    <Grid container
+                        display="inline-block"
+                        spacing={0}
+                        direction="row"
+                        alignItems="center"
+                        justify="center"
+                    >
+                        {cars.map((cars) =>(
+                            <div className={classes.cards}  key={cars.id}>
+                                <Card >
+                                    <CardContent>
+                                            <CardMedia
+                                            component="img"
+                                            alt="Car for Rent!"
+                                            height="140"
+                                            image={cars.image}
+                                            title="Car for Rent!"
+                                            />
+                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            {cars.Type}
+                                            </Typography>
+                                            <Typography variant="h5" component="h2">
+                                            {cars.Brand} {cars.Model}
+                                            </Typography>
+                                            <Typography className={classes.pos} color="textSecondary">
+                                            Price: {cars.Price}
+                                            </Typography>
+                                            <Typography variant="body2" component="p">
+                                            Transmission: {cars.Transmission}
+                                            </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        {cars.Qty > 0 ? (
+                                         <Button className={classes.button} size="small">Schedule Now!</Button>
+                                         ) : (
+                                        <Button className={classes.button} size="small">Unavailable!</Button>
+                                        )}           
+                                    </CardActions>
+                                </Card>
+                        </div>
+                        ))}
+                    </Grid>
+                </div>
     );
 }
 
-export default Home;
+const mapStatetoProps = (state) =>{
+  
+    return {cars: state.databaseReducer.cars}
+
+}
+
+export default connect(mapStatetoProps)(Home)

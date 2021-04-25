@@ -1,5 +1,7 @@
 import { React, useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+// MUI
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,12 +9,14 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+
+//Redux 
 import { connect } from 'react-redux'
+
+// Components
 import { authOptions, authLogout, authListener} from '../../service/auth';
-import logo from '../../Img/logo.png'
-import { Link } from 'react-router-dom';
-import Login from '../../pages/Login/Login';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +44,7 @@ function Navbar(props) {
  const handleLogout=(e)=>{
     authLogout();
     setLoggedIn(false);
-    return <Redirect to ="/"/>
+    window.location="/";
   }
 
 

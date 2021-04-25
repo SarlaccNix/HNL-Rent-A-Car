@@ -9,7 +9,6 @@ firebase
                 localStorage.setItem("email", user.email)
                 localStorage.setItem("token", user.refreshToken)
                 localStorage.setItem("photo", user.photoURL)
-                console.log(user)
             }
             else{
                 console.log(user)
